@@ -13,6 +13,18 @@ export default function DoorPage() {
     const [qrToken, setQrToken] = useState("");
     const [open, setOpen] = useState(false);
 
+    const roomStyle = {
+        TRONG: "border-green-400 bg-green-400",
+        DA_DAT: "border-orange-400 bg-orange-400",
+        CO_KHACH: "border-red-400 bg-red-400",
+    };
+
+    const roomLabel = {
+        TRONG: "Trống",
+        DA_DAT: "Đã đặt",
+        CO_KHACH: "Có khách",
+    };
+
     // load khách sạn
     useEffect(() => {
         getPublicHotels()
@@ -79,16 +91,23 @@ export default function DoorPage() {
             <Row gutter={[16, 16]}>
                 {rooms.map(room => (
                     <Col key={room.id} xs={12} sm={8} md={6}>
-                        <Card
-                            hoverable
-                            onClick={() => {
-                                setSelectedRoom(room);
-                                setOpen(true);
-                            }}
-                        >
-                            <h3>Phòng {room.soPhong}</h3>
-                            <p>Trạng thái: {room.trangThaiPhong}</p>
-                        </Card>
+                        <div className={`${roomStyle[room.trangThaiPhong]} border-2 rounded p-1`}>
+                            <Card
+                                hoverable
+                                onClick={() => {
+                                    setSelectedRoom(room);
+                                    setOpen(true);
+                                }}
+                            >
+                                <h3>Phòng {room.soPhong}</h3>
+                                <div className="flex items-center">
+                                    <span className="mr-2">Trạng thái:</span>
+                                    <div className={`inline-block px-2 py-1 rounded ${roomStyle[room.trangThaiPhong]}`}>
+                                        {roomLabel[room.trangThaiPhong]}
+                                    </div>
+                                </div>
+                            </Card>
+                        </div>
                     </Col>
                 ))}
             </Row>
